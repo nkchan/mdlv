@@ -10,10 +10,10 @@
 - [x] Pass structured JSON data to the frontend for granular rendering.
 - [x] Add Sticky Breadcrumb navigation at the top of the viewport.
 
-## Phase 3: Interactive Navigation (Next)
-- [ ] Implement "Auto-Folding" for sections deeper than level 3.
-- [ ] **Focus Mode (Zoom-in):** Isolate a specific branch into its own view.
-- [ ] Keyboard shortcuts for navigation (`Cmd+J`, `Tab` to fold/unfold).
+## Phase 3: Interactive Navigation
+- [x] Implement "Auto-Folding" for sections deeper than level 3.
+- [x] **Focus Mode (Zoom-in):** Isolate a specific branch into its own view.
+- [x] Keyboard shortcuts for navigation (`Cmd+J`, `Tab` to fold/unfold).
 
 ## Phase 4: Ecosystem & Polish
 - [ ] Real-time File Watching (auto-refresh on file change).
