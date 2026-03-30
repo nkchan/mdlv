@@ -48,6 +48,7 @@ function App() {
           onFilePathChange={setFilePath}
           onLoad={loadFile}
           isLoading={isLoading}
+          ast={ast}
         />
       )}
       <MainContent ast={ast} error={error} />
