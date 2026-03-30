@@ -7,7 +7,7 @@ hero:
   text: "Markdown Layered Viewer"
   tagline: The AI-Native Markdown Viewer for the Age of Deep Reasoning.
   image:
-    src: https://github.com/nkchan/mdlv/raw/main/src-tauri/icons/128x128.png
+    src: /logo.png
     alt: Mdlv Logo
   actions:
     - theme: brand

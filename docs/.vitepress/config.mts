@@ -5,7 +5,9 @@ export default defineConfig({
   title: "mdlv",
   description: "The AI-Native Markdown Viewer",
   base: '/mdlv/',
+  cleanUrls: true,
   themeConfig: {
+    logo: '/logo.png',
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
