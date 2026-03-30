@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "mdlv",
   description: "The AI-Native Markdown Viewer",
+  base: '/mdlv/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
