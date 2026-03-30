@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Sidebar } from "./components/Sidebar";
 import { MainContent } from "./components/MainContent";
@@ -10,6 +10,19 @@ function App() {
   const [ast, setAst] = useState<SectionNode | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+J (Mac) or Ctrl+J (Windows/Linux) to toggle sidebar
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+        setSidebarVisible((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   async function loadFile() {
     if (!filePath.trim()) return;
@@ -29,12 +42,14 @@ function App() {
 
   return (
     <div className="app-layout">
-      <Sidebar
-        filePath={filePath}
-        onFilePathChange={setFilePath}
-        onLoad={loadFile}
-        isLoading={isLoading}
-      />
+      {sidebarVisible && (
+        <Sidebar
+          filePath={filePath}
+          onFilePathChange={setFilePath}
+          onLoad={loadFile}
+          isLoading={isLoading}
+        />
+      )}
       <MainContent ast={ast} error={error} />
     </div>
   );

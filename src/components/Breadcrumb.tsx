@@ -3,9 +3,10 @@ import "../Breadcrumb.css";
 
 interface BreadcrumbProps {
   paths: SectionNode[];
+  onBreadcrumbClick?: (id: string) => void;
 }
 
-export function Breadcrumb({ paths }: BreadcrumbProps) {
+export function Breadcrumb({ paths, onBreadcrumbClick }: BreadcrumbProps) {
   if (paths.length === 0) {
     return <div className="breadcrumb-container">Root</div>;
   }
@@ -14,7 +15,13 @@ export function Breadcrumb({ paths }: BreadcrumbProps) {
     <div className="breadcrumb-container">
       {paths.map((sec, idx) => (
         <span key={sec.id} className="breadcrumb-item">
-          <span className="breadcrumb-text">{sec.title || "Untitled"}</span>
+          <span 
+            className={`breadcrumb-text ${onBreadcrumbClick ? 'clickable' : ''}`}
+            onClick={() => onBreadcrumbClick && onBreadcrumbClick(sec.id)}
+            title={onBreadcrumbClick ? "Focus this section" : ""}
+          >
+            {sec.title || "Untitled"}
+          </span>
           {idx < paths.length - 1 && <span className="breadcrumb-separator">›</span>}
         </span>
       ))}

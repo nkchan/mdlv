@@ -53,6 +53,68 @@
   margin-top: 0;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-left: -8px;
+  transition: background-color 0.2s;
+}
+
+.md-heading:hover {
+  background-color: var(--bg-hover);
+}
+
+.md-collapse-icon {
+  font-size: 0.7em;
+  opacity: 0.5;
+  width: 1em;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.md-focus-btn {
+  opacity: 0;
+  font-size: 0.7em;
+  transition: opacity 0.2s, transform 0.2s;
+  padding: 4px;
+}
+
+.md-focus-btn:hover {
+  transform: scale(1.2);
+}
+
+.md-heading:hover .md-focus-btn {
+  opacity: 1;
+}
+
+.md-focus-clear-btn {
+  margin-left: auto;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.md-focus-clear-btn:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.breadcrumb-text.clickable {
+  cursor: pointer;
+}
+
+.breadcrumb-text.clickable:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
 }
 
 h1.md-heading { font-size: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
