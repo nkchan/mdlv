@@ -13,6 +13,7 @@ We follow a strict **Issue-Driven Development** process. Do not write code witho
     - Never push directly to `main`.
 4.  **Atomic Commits:** Keep commits small and focused on a single logical change defined in the Issue.
 5.  **User Verification Before Merge:** PRを作成/マージする前に、必ずユーザーにローカルでの動作確認を依頼すること。勝手にマージしない。
+6.  **Language Policy:** GitHub Issues and Pull Requests must be written in English.
 ## Technical Constraints
 - **Backend:** Use idiomatic Rust. Prefer safety and speed.
 - **Frontend:** Use functional React components with TypeScript.
