@@ -12,8 +12,11 @@ dist
 dist-ssr
 *.local
 
-# Rust build artifacts
+# Rust / Tauri build artifacts
 target/
+src-tauri/target/
+src-tauri/gen/
+**/*.rs.bk
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +28,8 @@ target/
 *.njsproj
 *.sln
 *.sw?
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
