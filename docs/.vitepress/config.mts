@@ -4,7 +4,10 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "mdlv",
   description: "The AI-Native Markdown Viewer",
+  base: '/mdlv/',
+  cleanUrls: true,
   themeConfig: {
+    logo: '/logo.png',
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
@@ -26,7 +29,7 @@ export default defineConfig({
     
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2026-present Kaoru Nagashima'
+      copyright: 'Copyright © 2026-present mdlv'
     }
   }
 })
