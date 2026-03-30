@@ -2,11 +2,12 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Sidebar } from "./components/Sidebar";
 import { MainContent } from "./components/MainContent";
+import { SectionNode } from "./types/ast";
 import "./App.css";
 
 function App() {
   const [filePath, setFilePath] = useState("");
-  const [content, setContent] = useState<string | null>(null);
+  const [ast, setAst] = useState<SectionNode | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -14,11 +15,11 @@ function App() {
     if (!filePath.trim()) return;
     setIsLoading(true);
     setError(null);
-    setContent(null);
+    setAst(null);
 
     try {
-      const text = await invoke<string>("read_md_file", { path: filePath.trim() });
-      setContent(text);
+      const parsedAst = await invoke<SectionNode>("parse_md_file", { path: filePath.trim() });
+      setAst(parsedAst);
     } catch (e) {
       setError(String(e));
     } finally {
@@ -34,7 +35,7 @@ function App() {
         onLoad={loadFile}
         isLoading={isLoading}
       />
-      <MainContent content={content} error={error} filePath={filePath} />
+      <MainContent ast={ast} error={error} />
     </div>
   );
 }

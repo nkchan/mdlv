@@ -1,0 +1,112 @@
+/* Breadcrumbs */
+.main-header.sticky {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 24px;
+  z-index: 20;
+  opacity: 0.95;
+  backdrop-filter: blur(8px);
+}
+
+.breadcrumb-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb-separator {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+.breadcrumb-text {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* AST Viewer */
+.main-scroll-area {
+  padding: 24px;
+}
+
+.md-section {
+  position: relative;
+}
+
+.md-section.level-1 { margin-top: 2rem; }
+.md-section.level-2 { margin-top: 1.5rem; }
+.md-section.level-3 { margin-top: 1rem; }
+
+.md-heading {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+h1.md-heading { font-size: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+h2.md-heading { font-size: 1.5rem; }
+h3.md-heading { font-size: 1.25rem; }
+h4.md-heading { font-size: 1.1rem; }
+h5.md-heading { font-size: 1rem; }
+h6.md-heading { font-size: 0.875rem; color: var(--text-secondary); }
+
+.md-html {
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.md-html p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.md-html pre {
+  background-color: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.md-html code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.85em;
+  background-color: var(--bg-secondary);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.md-html pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+.md-html blockquote {
+  margin: 0 0 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.md-children {
+  margin-left: 1rem;
+  border-left: 1px solid var(--border-color);
+  padding-left: 1rem;
+}
+
+.md-section.level-0 > .md-children {
+  margin-left: 0;
+  border-left: none;
+  padding-left: 0;
+}
