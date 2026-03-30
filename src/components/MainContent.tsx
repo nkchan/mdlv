@@ -113,11 +113,11 @@ export function MainContent({ ast, error }: MainContentProps) {
   };
 
   return (
-    <main className="main-content">
+    <main className="main-content" ref={contentRef}>
       <div className="main-header sticky">
         <Breadcrumb paths={activePath} />
       </div>
-      <div className="main-scroll-area" ref={contentRef}>
+      <div className="main-scroll-area">
         <div className="main-ast-viewer">
           {renderSection(ast)}
         </div>

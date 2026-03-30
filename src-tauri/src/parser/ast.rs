@@ -88,11 +88,8 @@ pub fn parse_markdown_to_ast(md: &str) -> SectionNode {
                 };
                 heading_level = lvl;
                 heading_text.clear();
-            }
-            Event::End(TagEnd::Heading(_)) => {
-                in_heading = false;
                 
-                // Finalize current section's HTML blocks
+                // 見出しが始まる前に、今のセクションに溜まっていたHTMLを確定させる
                 if let Some(mut top) = section_stack.pop() {
                     if !current_section_html.is_empty() {
                         top.blocks.push(BlockNode::HTML { html: current_section_html.clone() });
@@ -100,26 +97,21 @@ pub fn parse_markdown_to_ast(md: &str) -> SectionNode {
                     }
                     section_stack.push(top);
                 }
-
-                // Pop stack until we find a section with level < current heading
+            }
+            Event::End(TagEnd::Heading(_)) => {
+                in_heading = false;
+                
+                // 現在のスタックのうち、これから追加する見出しのレベル以上のものをpopする
                 let mut popped = vec![];
                 while let Some(top) = section_stack.last() {
-                    if top.level >= heading_level {
+                    if top.level >= heading_level && top.level != 0 {
                         popped.push(section_stack.pop().unwrap());
                     } else {
                         break;
                     }
                 }
                 
-                // Assemble popped sections as children
-                // Note: we must reverse because we popped them top-down, but siblings keep order.
-                // Wait, actually siblings are just children of whatever parent is left.
-                // Let's attach popped sections to the previous section that was popped, or directly to their parent later.
-                // A simpler algorithm:
-                // pop all sections that have level >= current. Attach each to the one popped immediately AFTER it, 
-                // OR wait, when popping a section, it becomes a child of the NEW top of the stack.
-                // Let's do it correctly: when we pop, we add it to the `children` of the *current* top of the stack.
-                for child in popped {
+                for child in popped.into_iter().rev() {
                     if let Some(parent) = section_stack.last_mut() {
                         parent.children.push(child);
                     }
@@ -140,16 +132,15 @@ pub fn parse_markdown_to_ast(md: &str) -> SectionNode {
             Event::Text(ref text) | Event::Code(ref text) => {
                 if in_heading {
                     heading_text.push_str(text);
+                } else {
+                    let html_event = std::iter::once(event.clone());
+                    let mut html_out = String::new();
+                    pulldown_cmark::html::push_html(&mut html_out, html_event);
+                    current_section_html.push_str(&html_out);
                 }
-                // Also push to HTML
-                let html_event = std::iter::once(event.clone());
-                let mut html_out = String::new();
-                pulldown_cmark::html::push_html(&mut html_out, html_event);
-                current_section_html.push_str(&html_out);
             }
             e => {
                 if !in_heading {
-                    // Render to HTML directly for MVP block parsing
                     let html_event = std::iter::once(e.clone());
                     let mut html_out = String::new();
                     pulldown_cmark::html::push_html(&mut html_out, html_event);
