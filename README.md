@@ -38,5 +38,12 @@ npm install
 npm run tauri dev
 ```
 
+### 🚨 For Developers
+Before pushing changes (especially UI or structural changes), please run the production build locally to ensure everything compiles correctly:
+```bash
+npm run tauri build
+```
+Verification of the production build is required to avoid breaking the CI/CD pipeline.
+
 ## 📄 License
 This project is licensed under the **MIT License**.

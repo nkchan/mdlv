@@ -2,8 +2,11 @@ name: 'Release'
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -40,9 +43,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v${{ github.ref_name }}
+          # Only publish if this was triggered by a tag
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
           releaseName: 'Mdlv ${{ github.ref_name }}'
           releaseBody: 'See the attached assets to download and install this version.'
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
