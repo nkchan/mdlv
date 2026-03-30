@@ -19,5 +19,24 @@ In the era of AI, we no longer just read documents; we navigate through complex 
 - **UI:** React + TypeScript + Tailwind CSS
 - **Parser:** AST-based structural analysis in Rust (`pulldown-cmark`)
 
+## 💻 Getting Started
+
+### Prerequisites
+- Node.js (v20+)
+- Rust (stable, installed via `rustup`)
+
+### Installation & Run
+```bash
+# Clone the repository
+git clone https://github.com/nkchan/mdlv.git
+cd mdlv
+
+# Install dependencies
+npm install
+
+# Start the development server and desktop app
+npm run tauri dev
+```
+
 ## 📄 License
 This project is licensed under the **MIT License**.
