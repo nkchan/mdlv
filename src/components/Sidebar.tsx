@@ -6,9 +6,10 @@ interface SidebarProps {
   onLoad: () => void;
   isLoading: boolean;
   ast?: SectionNode | null;
+  filesInDir?: { name: string; path: string }[];
 }
 
-export function Sidebar({ filePath, onFilePathChange, onLoad, isLoading, ast }: SidebarProps) {
+export function Sidebar({ filePath, onFilePathChange, onLoad, isLoading, ast, filesInDir = [] }: SidebarProps) {
   const renderTocItem = (node: SectionNode) => {
     if (node.level === 0) {
       return (
@@ -77,7 +78,7 @@ export function Sidebar({ filePath, onFilePathChange, onLoad, isLoading, ast }: 
       <div className="sidebar-toc">
         {ast ? (
           <div className="toc-content">
-            <h3 className="toc-heading">On this page</h3>
+            <h3 className="sidebar-heading">On this page</h3>
             {renderTocItem(ast)}
           </div>
         ) : (
@@ -87,6 +88,33 @@ export function Sidebar({ filePath, onFilePathChange, onLoad, isLoading, ast }: 
           </div>
         )}
       </div>
+
+      {filesInDir.length > 0 && (
+        <div className="sidebar-files">
+          <h3 className="sidebar-heading">In this folder</h3>
+          <ul className="file-list">
+            {filesInDir.map((f) => {
+              const isActive = f.path === filePath;
+              return (
+                <li 
+                  key={f.path} 
+                  className={`file-item ${isActive ? 'active' : ''}`}
+                  onClick={() => {
+                    if (!isActive) {
+                      onFilePathChange(f.path);
+                      // Provide a short delay for state to update before loading
+                      setTimeout(() => onLoad(), 0);
+                    }
+                  }}
+                  title={f.path}
+                >
+                  📄 {f.name}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </aside>
   );
 }

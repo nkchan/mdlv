@@ -38,6 +38,13 @@ pub struct SectionNode {
     pub children: Vec<SectionNode>,
 }
 
+pub fn process_ai_blocks(html: &str) -> String {
+    html.replace("<think>", "<details class=\"md-ai-thought\"><summary>Thinking Process...</summary><div class=\"md-ai-thought-content\">")
+        .replace("</think>", "</div></details>")
+        .replace("<thought>", "<details class=\"md-ai-thought\"><summary>Thinking Process...</summary><div class=\"md-ai-thought-content\">")
+        .replace("</thought>", "</div></details>")
+}
+
 pub fn parse_markdown_to_ast(md: &str) -> SectionNode {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_STRIKETHROUGH);
@@ -92,7 +99,8 @@ pub fn parse_markdown_to_ast(md: &str) -> SectionNode {
                 // 見出しが始まる前に、今のセクションに溜まっていたHTMLを確定させる
                 if let Some(mut top) = section_stack.pop() {
                     if !current_section_html.is_empty() {
-                        top.blocks.push(BlockNode::HTML { html: current_section_html.clone() });
+                        let processed = process_ai_blocks(&current_section_html);
+                        top.blocks.push(BlockNode::HTML { html: processed });
                         current_section_html.clear();
                     }
                     section_stack.push(top);
@@ -153,7 +161,8 @@ pub fn parse_markdown_to_ast(md: &str) -> SectionNode {
     // Finalize the last section and unwind the stack
     if !current_section_html.is_empty() {
         if let Some(mut top) = section_stack.pop() {
-            top.blocks.push(BlockNode::HTML { html: current_section_html });
+            let processed = process_ai_blocks(&current_section_html);
+            top.blocks.push(BlockNode::HTML { html: processed });
             section_stack.push(top);
         }
     }
