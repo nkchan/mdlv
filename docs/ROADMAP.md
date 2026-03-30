@@ -15,11 +15,19 @@
 - [x] **Focus Mode (Zoom-in):** Isolate a specific branch into its own view.
 - [x] Keyboard shortcuts for navigation (`Cmd+J`, `Tab` to fold/unfold).
 
-## Phase 4: Ecosystem & Polish
-- [ ] Real-time File Watching (auto-refresh on file change).
-- [ ] Support for Mermaid diagrams and KaTeX.
-- [ ] macOS-native UI polish (Vibrancy, system fonts).
+## Phase 4: AI-Native Polish & Ecosystem
+- [x] **Real-time File Watching:** Auto-refresh UI when an AI agent or script updates the file.
+- [x] **AI Block Handling:** Specialized styling for `<thought>` and `thinking` reasoning chains.
+- [x] **Folder Navigation:** Sidebar explorer to quickly switch between `.md` files in the same directory.
+- [ ] **Rich Content:** Native support for Mermaid diagrams and KaTeX math.
+- [ ] **macOS Polish:** Vibrancy effects and system font optimization.
 
 ## Phase 5: Distribution & Marketing
-- [ ] Automate macOS `.dmg` build and release using GitHub Actions.
-- [ ] Create a project Homepage (GitHub Pages) with VitePress/Astro or React.
+- [x] Automate macOS `.dmg` build and release using GitHub Actions.
+- [x] Create a project Homepage (GitHub Pages) with VitePress.
+
+## Phase 6: The AI-Native Workspace (Next Vision)
+- [ ] **Open Project / Workspace:** Open an entire directory rather than a single file (Issue #16).
+- [ ] **Nested Sidebar Explorer:** View and navigate deeply nested folder structures (Issue #17).
+- [ ] **Intelligent Search:** Full-text or AST-aware search across the entire project.
+- [ ] **Semantic / Contextual Linking:** Features to connect ideas and understand the context as an "AI-Native" tool.
