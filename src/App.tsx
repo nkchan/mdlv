@@ -1,19 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import { open } from "@tauri-apps/plugin-dialog";
 import { Sidebar } from "./components/Sidebar";
 import { MainContent } from "./components/MainContent";
 import { SectionNode } from "./types/ast";
+import { TreeNode } from "./types/workspace";
 import "./App.css";
 
 function App() {
+  const [workspaceRoot, setWorkspaceRoot] = useState<string | null>(null);
+  const [workspaceTree, setWorkspaceTree] = useState<TreeNode | null>(null);
   const [filePath, setFilePath] = useState("");
   const [ast, setAst] = useState<SectionNode | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
-
   const [filesInDir, setFilesInDir] = useState<{name: string, path: string}[]>([]);
+
 
   const loadFileRef = useRef<() => void>(() => {});
 
@@ -92,6 +96,21 @@ function App() {
     loadFileRef.current = loadFile;
   }, [filePath]); // we only need latest loadFile tied to filePath
 
+  async function openWorkspace() {
+    try {
+      const selected = await open({ directory: true, multiple: false, title: "Open Workspace Folder" });
+      if (!selected) return;
+      const dirPath = Array.isArray(selected) ? selected[0] : selected;
+      const tree = await invoke<TreeNode>("open_workspace", { path: dirPath });
+      setWorkspaceRoot(dirPath);
+      setWorkspaceTree(tree);
+      setFilePath("");
+      setAst(null);
+      setError(null);
+    } catch (e) {
+      console.error("Failed to open workspace:", e);
+    }
+  }
   return (
     <div className="app-layout">
       {sidebarVisible && (
@@ -102,6 +121,9 @@ function App() {
           isLoading={isLoading}
           ast={ast}
           filesInDir={filesInDir}
+          workspaceRoot={workspaceRoot}
+          workspaceTree={workspaceTree}
+          onOpenWorkspace={openWorkspace}
         />
       )}
       <MainContent ast={ast} error={error} />
