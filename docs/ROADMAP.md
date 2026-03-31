@@ -15,11 +15,12 @@
 - [x] **Focus Mode (Zoom-in):** Isolate a specific branch into its own view.
 - [x] Keyboard shortcuts for navigation (`Cmd+J`, `Tab` to fold/unfold).
 
-## Phase 4: Ecosystem & Polish
-- [ ] Real-time File Watching (auto-refresh on file change).
-- [ ] Support for Mermaid diagrams and KaTeX.
-- [ ] macOS-native UI polish (Vibrancy, system fonts).
+## Phase 4: AI-Native Polish & Ecosystem (Next)
+- [ ] **Real-time File Watching:** Auto-refresh UI when an AI agent or script updates the file.
+- [ ] **AI Block Handling:** Specialized styling for `<thought>` and `thinking` reasoning chains.
+- [ ] **Rich Content:** Native support for Mermaid diagrams and KaTeX math.
+- [ ] **macOS Polish:** Vibrancy effects and system font optimization.
 
 ## Phase 5: Distribution & Marketing
-- [ ] Automate macOS `.dmg` build and release using GitHub Actions.
-- [ ] Create a project Homepage (GitHub Pages) with VitePress/Astro or React.
+- [x] Automate macOS `.dmg` build and release using GitHub Actions.
+- [x] Create a project Homepage (GitHub Pages) with VitePress.
