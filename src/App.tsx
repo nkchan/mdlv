@@ -111,7 +111,6 @@ function App() {
       console.error("Failed to open workspace:", e);
     }
   }
-
   return (
     <div className="app-layout">
       {sidebarVisible && (

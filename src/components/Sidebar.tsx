@@ -218,6 +218,7 @@ export function Sidebar({
                   onClick={() => {
                     if (!isActive) {
                       onFilePathChange(f.path);
+                      // Provide a short delay for state to update before loading
                       setTimeout(() => onLoad(), 0);
                     }
                   }}
