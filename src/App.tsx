@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { Sidebar } from "./components/Sidebar";
 import { MainContent } from "./components/MainContent";
 import { SectionNode } from "./types/ast";
@@ -11,6 +12,37 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  const [filesInDir, setFilesInDir] = useState<{name: string, path: string}[]>([]);
+
+  const loadFileRef = useRef<() => void>(() => {});
+
+  // Ref to hold the latest filePath for the event listener without recreating it constantly
+  const filePathRef = useRef(filePath);
+  useEffect(() => {
+    filePathRef.current = filePath;
+  }, [filePath]);
+
+  useEffect(() => {
+    let unlisten: UnlistenFn | undefined;
+
+    const setupListener = async () => {
+      unlisten = await listen<{ path: string }>("file-changed", (event) => {
+        // If the changed file is the one we are currently viewing, reload it.
+        // notify can sometimes send absolute paths with slightly different formats, 
+        // but exact matching or simple includes is usually enough.
+        if (filePathRef.current && event.payload.path === filePathRef.current) {
+            loadFileRef.current();
+        }
+      });
+    };
+
+    setupListener();
+
+    return () => {
+      if (unlisten) unlisten();
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -31,14 +63,34 @@ function App() {
     setAst(null);
 
     try {
+      // Start watching the file on the backend
+      try {
+        await invoke("watch_file", { path: filePath.trim() });
+      } catch (watchErr) {
+        console.warn("Failed to watch file:", watchErr);
+      }
+
       const parsedAst = await invoke<SectionNode>("parse_md_file", { path: filePath.trim() });
       setAst(parsedAst);
+
+      // Fetch files in the same directory
+      try {
+        const files = await invoke<{name: string, path: string}[]>("list_md_files_in_dir", { path: filePath.trim() });
+        setFilesInDir(files);
+      } catch (err) {
+        console.warn("Failed to list directory files:", err);
+      }
     } catch (e) {
       setError(String(e));
     } finally {
       setIsLoading(false);
     }
   }
+
+  // Update ref to always point to the fresh loadFile function
+  useEffect(() => {
+    loadFileRef.current = loadFile;
+  }, [filePath]); // we only need latest loadFile tied to filePath
 
   return (
     <div className="app-layout">
@@ -49,6 +101,7 @@ function App() {
           onLoad={loadFile}
           isLoading={isLoading}
           ast={ast}
+          filesInDir={filesInDir}
         />
       )}
       <MainContent ast={ast} error={error} />
