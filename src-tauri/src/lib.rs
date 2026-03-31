@@ -4,6 +4,7 @@ mod parser;
 use std::sync::Mutex;
 use commands::file::{read_md_file, parse_md_file, list_md_files_in_dir, watch_file, WatcherState};
 use commands::workspace::{open_workspace, get_workspace_root, WorkspaceState};
+use commands::search::search_workspace;
 use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -28,6 +29,7 @@ pub fn run() {
             watch_file,
             open_workspace,
             get_workspace_root,
+            search_workspace,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
