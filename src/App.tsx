@@ -6,6 +6,7 @@ import { Sidebar } from "./components/Sidebar";
 import { MainContent } from "./components/MainContent";
 import { SectionNode } from "./types/ast";
 import { TreeNode } from "./types/workspace";
+import { SearchModal } from "./components/SearchModal";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [filesInDir, setFilesInDir] = useState<{name: string, path: string}[]>([]);
 
 
@@ -54,6 +56,11 @@ function App() {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
         e.preventDefault();
         setSidebarVisible((prev) => !prev);
+      }
+      // Cmd+K to open search
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -127,6 +134,19 @@ function App() {
         />
       )}
       <MainContent ast={ast} error={error} />
+      
+      <SearchModal 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)}
+        workspaceRoot={workspaceRoot}
+        onSelectResult={(selectedPath, _headingTitle) => {
+          setFilePath(selectedPath);
+          // Allow state to settle, then load file. (we could also scroll to heading)
+          // Since AST doesn't guarantee strict IDs matching plain strings, 
+          // we just open the file for now. Can enhance scrolling later.
+          setTimeout(() => loadFileRef.current(), 50);
+        }}
+      />
     </div>
   );
 }
